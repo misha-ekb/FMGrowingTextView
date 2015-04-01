@@ -37,7 +37,7 @@
 {
     super.delegate = self;
     
-    self.realTextContainerInsets = self.textContainerInset;
+    self.realTextContainerInsets = ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f) ? self.textContainerInset : UIEdgeInsetsMake(0, 0, 0, 0);
     self.embeddedContentInsets = UIEdgeInsetsMake(4, 4, 4, 4);
     self.embeddedContentSize = CGSizeMake(64, 64);
     
@@ -160,7 +160,10 @@
         self.embeddedContentView.hidden = !hasInsertedContent;
         
         if (!hasInsertedContent) {
-            super.textContainerInset = self.realTextContainerInsets;
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0f) {
+                super.textContainerInset = self.realTextContainerInsets;    
+            }
+            
             [self setMinimumHeightWithNumberOfLines:1 animated:NO completion:^{}];
         }
         else {
